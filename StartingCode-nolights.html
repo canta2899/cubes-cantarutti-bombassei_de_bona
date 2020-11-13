@@ -34,16 +34,47 @@
 			renderer = new THREE.WebGLRenderer( {antialias: true} );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.setClearColor( 0xf0f0f0 );
+			//renderer.shadowMap.enabled = true;
 			document.body.appendChild( renderer.domElement );
-			
-			camera.position.set(3,4,6);
+
+			const ambient = new THREE.PointLight(0xffffff)
+			ambient.position.set(0, 8, 0)
+			scene.add(ambient)
+
+			let module_geom = new THREE.BoxGeometry(20, 20, 20)
+			const loader = new THREE.TextureLoader()
+			let wall_1 = loader.load("textures/wall_1.jpg")
+			let floor_1 = loader.load("textures/floor_1.jpg")
+
+			let material_1 = [
+					new THREE.MeshPhongMaterial({
+						map: wall_1,
+						side: THREE.BackSide
+					}),
+					new THREE.MeshPhongMaterial({
+						map: floor_1,
+						side: THREE.BackSide
+					})
+			]
+			module_geom.faces[0].materialIndex = 0
+			module_geom.faces[1].materialIndex = 0
+			module_geom.faces[2].materialIndex = 0
+			module_geom.faces[3].materialIndex = 0
+			module_geom.faces[4].materialIndex = 0
+			module_geom.faces[5].materialIndex = 0
+			module_geom.faces[6].materialIndex = 1
+			module_geom.faces[7].materialIndex = 1
+			module_geom.faces[8].materialIndex = 0
+			module_geom.faces[9].materialIndex = 0
+			module_geom.faces[10].materialIndex = 0
+			module_geom.faces[11].materialIndex = 0
+
+			let room_1 = new THREE.Mesh(module_geom, material_1)
+			scene.add(room_1)
+
+
+			camera.position.set(0, 0, 30);
 			camera.lookAt( new THREE.Vector3(0,0,0));
-			
-			var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa } );
-			var cube = new THREE.Mesh( geometry, material );
-			
-			scene.add( cube );
 			
 			stats = new Stats();
 			stats.domElement.style.position = 'absolute';
