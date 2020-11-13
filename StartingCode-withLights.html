@@ -92,9 +92,7 @@
 			//Coordinates.drawAllAxes();
 			
 			controls = new THREE.OrbitControls( camera );
-			controls.addEventListener( 'change', Render );
-			
-			
+			controls.addEventListener( 'change', Render );	
 		}
 		
 		function Update() {
@@ -105,7 +103,6 @@
 		}
 		
 		function Render() {
-			
 			renderer.render(scene, camera);
 		}
 		
