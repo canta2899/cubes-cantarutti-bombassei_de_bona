@@ -1,178 +1,162 @@
 <html>
-	<head>
-		<title>Starting Code for 1st Project 2017</title>
-		<style>
-		
+<head>
+	<title>Starting Code for 1st Project 2017</title>
+	<style>
+
 		body {
 			font-family: Monospace;
 			background-color: #f0f0f0;
 			margin: 0px;
 			overflow: hidden;
 		}
-		
-		canvas { 
-			width: 100%; 
+
+		canvas {
+			width: 100%;
 			height: 100%;
 		}
-	
+
 	</style>
-		<script src="lib/three.min.js"></script>
-		<script src="lib/stats.min.js"></script>
-		<script src="lib/Coordinates.js"></script>
-		<script src="lib/OrbitControls.js"></script>
-	</head>
-	<body>
-		
-		<script>
-		
-		var scene, camera, renderer, controls, stats;
-		
-		function Start() {
-			scene = new THREE.Scene();
-			camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+	<script src="lib/three.min.js"></script>
+	<script src="lib/stats.min.js"></script>
+	<script src="lib/Coordinates.js"></script>
+	<script src="lib/OrbitControls.js"></script>
+</head>
+<body>
 
-			renderer = new THREE.WebGLRenderer( {antialias: true} );
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			//renderer.setClearColor( 0xf0f0f0 );
-			renderer.shadowMap.enabled = true;
-			document.body.appendChild( renderer.domElement );
+<script>
 
+	var scene, camera, renderer, controls, stats;
 
-			// Point light
-			const ambient = new THREE.PointLight(0xfcf9e9)
-			ambient.position.set(0, 4, 0)
-			scene.add(ambient)
+	function Start() {
+		scene = new THREE.Scene();
+		camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-			var module_geom = new THREE.BoxGeometry(20, 20, 20)
-			const loader = new THREE.TextureLoader()
-			var wall_1 = loader.load("textures/wall_1.jpg")
-			var floor_1 = loader.load("textures/floor_1.jpg")
-
-			
-			// Emissive lamp object
-			var lamp_geom = new THREE.BoxGeometry(1,1,1)
-			var lamp_mat = new THREE.MeshPhongMaterial({
-				emissive: 0xffffff
-			}) 
-			var lamp = new THREE.Mesh(lamp_geom, lamp_mat)
-			scene.add(lamp)
-			lamp.position.y = 9.5
+		renderer = new THREE.WebGLRenderer( {antialias: true} );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		renderer.setClearColor( 0xf0f0f0 );
+		renderer.shadowMap.enabled = true;
+		document.body.appendChild( renderer.domElement );
 
 
-			// Room (with walls and floor textures)
+		// Point light
+		const ambient = new THREE.PointLight(0xfcf9e9)
+		ambient.position.set(0, 4, 0)
+		scene.add(ambient)
 
-			var material_1 = [
-					new THREE.MeshPhongMaterial({
-						map: wall_1,
-						side: THREE.BackSide,
-						shininess: 15
-					}),
-					new THREE.MeshPhongMaterial({
-						map: floor_1,
-						side: THREE.BackSide,
-						shininess: 15
-					})
-			]
-			module_geom.faces[0].materialIndex = 0
-			module_geom.faces[1].materialIndex = 0
-			module_geom.faces[2].materialIndex = 0
-			module_geom.faces[3].materialIndex = 0
-			module_geom.faces[4].materialIndex = 0
-			module_geom.faces[5].materialIndex = 0
-			module_geom.faces[6].materialIndex = 1
-			module_geom.faces[7].materialIndex = 1
-			module_geom.faces[8].materialIndex = 0
-			module_geom.faces[9].materialIndex = 0
-			module_geom.faces[10].materialIndex = 0
-			module_geom.faces[11].materialIndex = 0
+		// Emissive lamp object
+		var lamp_geom = new THREE.BoxGeometry(1,1,1)
+		var lamp_mat = new THREE.MeshPhongMaterial({
+			emissive: 0xffffff
+		})
+		var lamp = new THREE.Mesh(lamp_geom, lamp_mat)
+		scene.add(lamp)
+		lamp.position.y = 9.5
 
-			var module_geom = new THREE.BoxGeometry(20, 20, 20)
-			for(var i = 0; i < 6; i++) {
-				if (i !== 3) {
-					module_geom.faces[2 * i].materialIndex = 0
-					module_geom.faces[2 * i + 1].materialIndex = 0
-				}
-				else {
-					module_geom.faces[2 * i].materialIndex = 1
-					module_geom.faces[2 * i + 1].materialIndex = 1
-				}
+
+		// Room (with walls and floor textures)
+
+		var module_geom = new THREE.BoxGeometry(20, 20, 20)
+		for(var i = 0; i < 6; i++) {
+			if (i !== 3) {
+				module_geom.faces[2 * i].materialIndex = 0
+				module_geom.faces[2 * i + 1].materialIndex = 0
 			}
-
-			const loader = new THREE.TextureLoader()
-
-			var wall = loader.load("textures/wall_1.jpg")
-			var floor = loader.load("textures/floor_1.jpg")
-			var material = [
-				new THREE.MeshPhongMaterial({
-					map: wall,
-					side: THREE.BackSide,
-					shininess: 15
-				}),
-				new THREE.MeshPhongMaterial({
-					map: floor,
-					side: THREE.BackSide,
-					shininess: 15
-				})
-			]
-			var room_1 = new THREE.Mesh(module_geom, material)
-			scene.add(room_1)
-
-			wall = loader.load("textures/wall_2.jpg")
-			floor = loader.load("textures/floor_2.jpg")
-			material = [
-				new THREE.MeshPhongMaterial({
-					map: wall,
-					side: THREE.BackSide,
-					shininess: 15
-				}),
-				new THREE.MeshPhongMaterial({
-					map: floor,
-					side: THREE.BackSide,
-					shininess: 15
-				})
-			]
-			var room_2 = new THREE.Mesh(module_geom, material)
-			scene.add(room_2)
-
-
-			// Camera
-
-			// Camera
-
-			camera.position.set(0, 0, 30);
-			camera.lookAt( new THREE.Vector3(0,0,0));
-			
-
-			
-			// Stats
-
-			stats = new Stats();
-			stats.domElement.style.position = 'absolute';
-			stats.domElement.style.top = '0px';
-			document.body.appendChild( stats.domElement );
-			
-			// uncomment if you need to draw coordinate axes when building the scene
-			//Coordinates.drawAllAxes();
-			
-			controls = new THREE.OrbitControls( camera );
-			controls.addEventListener( 'change', Render );
+			else {
+				module_geom.faces[2 * i].materialIndex = 1
+				module_geom.faces[2 * i + 1].materialIndex = 1
+			}
 		}
-		
-		function Update() {
-			requestAnimationFrame( Update );
-			controls.update();  
-			stats.update();
-			Render();
-		}
-		
-		function Render() {
-			
-			renderer.render(scene, camera);
-		}
-		
-		Start();
-		Update();
-			
-		</script>
-	</body>
+
+		const loader = new THREE.TextureLoader()
+
+		var wall = loader.load("textures/wall_1.jpg")
+		var floor = loader.load("textures/floor_1.jpg")
+		var material = [
+			new THREE.MeshPhongMaterial({
+				map: wall,
+				side: THREE.BackSide,
+				shininess: 15
+			}),
+			new THREE.MeshPhongMaterial({
+				map: floor,
+				side: THREE.BackSide,
+				shininess: 15
+			})
+		]
+		var room_1 = new THREE.Mesh(module_geom, material)
+		scene.add(room_1)
+
+		wall = loader.load("textures/wall_2.jpg")
+		floor = loader.load("textures/floor_2.jpg")
+		material = [
+			new THREE.MeshPhongMaterial({
+				map: wall,
+				side: THREE.BackSide,
+				shininess: 15
+			}),
+			new THREE.MeshPhongMaterial({
+				map: floor,
+				side: THREE.BackSide,
+				shininess: 15
+			})
+		]
+		var room_2 = new THREE.Mesh(module_geom, material)
+		scene.add(room_2)
+
+		wall = loader.load("textures/wall_3.jpg")
+		floor = loader.load("textures/floor_3.jpg")
+		material = [
+			new THREE.MeshPhongMaterial({
+				map: wall,
+				side: THREE.BackSide,
+				shininess: 15
+			}),
+			new THREE.MeshPhongMaterial({
+				map: floor,
+				side: THREE.BackSide,
+				shininess: 15
+			})
+		]
+		var room_3 = new THREE.Mesh(module_geom, material)
+		scene.add(room_3)
+
+
+		// Camera
+
+		camera.position.set(0, 0, 30);
+		camera.lookAt( new THREE.Vector3(0,0,0));
+
+
+
+		// Stats
+
+		stats = new Stats();
+		stats.domElement.style.position = 'absolute';
+		stats.domElement.style.top = '0px';
+		document.body.appendChild( stats.domElement );
+
+		// uncomment if you need to draw coordinate axes when building the scene
+		//Coordinates.drawAllAxes();
+
+		controls = new THREE.OrbitControls( camera );
+		controls.addEventListener( 'change', Render );
+	}
+
+	function Update() {
+		requestAnimationFrame( Update );
+		controls.update();
+		stats.update();
+		Render();
+	}
+
+	function Render() {
+
+		renderer.render(scene, camera);
+	}
+
+	Start();
+	Update();
+
+</script>
+</body>
 </html>

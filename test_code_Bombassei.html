@@ -103,6 +103,23 @@
         var room_2 = new THREE.Mesh(module_geom, material)
         scene.add(room_2)
 
+        wall = loader.load("textures/wall_3.jpg")
+        floor = loader.load("textures/floor_3.jpg")
+        material = [
+            new THREE.MeshPhongMaterial({
+                map: wall,
+                side: THREE.BackSide,
+                shininess: 15
+            }),
+            new THREE.MeshPhongMaterial({
+                map: floor,
+                side: THREE.BackSide,
+                shininess: 15
+            })
+        ]
+        var room_3 = new THREE.Mesh(module_geom, material)
+        scene.add(room_3)
+
 
         // Camera
 

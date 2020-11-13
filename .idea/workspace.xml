@@ -20,11 +20,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test_code.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/textures/floor_2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/textures/wall_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/floor_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/wall_3.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StartingCode-nolights.html" beforeDir="false" afterPath="$PROJECT_DIR$/StartingCode-nolights.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_code_Bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_Bombassei.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_b020.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_d100.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_s100+g100.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_b010.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_d100.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_s100-g100.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-48_b015.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-48_s100-g100-r050.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/textures/holzv2_10.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
