@@ -34,26 +34,41 @@
 			renderer = new THREE.WebGLRenderer( {antialias: true} );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			renderer.setClearColor( 0xf0f0f0 );
-			//renderer.shadowMap.enabled = true;
+			renderer.shadowMap.enabled = true;
 			document.body.appendChild( renderer.domElement );
 
-			const ambient = new THREE.PointLight(0xffffff)
-			ambient.position.set(0, 8, 0)
+
+			//Lamp
+			const ambient = new THREE.PointLight(0xfcf9e9)
+			ambient.position.set(0, 4, 0)
 			scene.add(ambient)
 
-			let module_geom = new THREE.BoxGeometry(20, 20, 20)
+			var module_geom = new THREE.BoxGeometry(20, 20, 20)
 			const loader = new THREE.TextureLoader()
-			let wall_1 = loader.load("textures/wall_1.jpg")
-			let floor_1 = loader.load("textures/floor_1.jpg")
+			var wall_1 = loader.load("textures/wall_1.jpg")
+			var floor_1 = loader.load("textures/floor_1.jpg")
 
-			let material_1 = [
+
+			var lamp_geom = new THREE.BoxGeometry(1,1,1)
+			var lamp_mat = new THREE.MeshPhongMaterial({
+				emissive: 0xffffff
+			}) 
+			var lamp = new THREE.Mesh(lamp_geom, lamp_mat)
+
+			scene.add(lamp)
+			lamp.position.y = 9.5
+
+
+			var material_1 = [
 					new THREE.MeshPhongMaterial({
 						map: wall_1,
-						side: THREE.BackSide
+						side: THREE.BackSide,
+						shininess: 15
 					}),
 					new THREE.MeshPhongMaterial({
 						map: floor_1,
-						side: THREE.BackSide
+						side: THREE.BackSide,
+						shininess: 15
 					})
 			]
 			module_geom.faces[0].materialIndex = 0
@@ -69,7 +84,7 @@
 			module_geom.faces[10].materialIndex = 0
 			module_geom.faces[11].materialIndex = 0
 
-			let room_1 = new THREE.Mesh(module_geom, material_1)
+			var room_1 = new THREE.Mesh(module_geom, material_1)
 			scene.add(room_1)
 
 
