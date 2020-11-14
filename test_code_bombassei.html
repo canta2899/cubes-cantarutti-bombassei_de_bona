@@ -1,0 +1,447 @@
+<html>
+<head>
+    <title>Starting Code for 1st Project 2017 - with lights and textures</title>
+    <style>
+
+        body {
+            font-family: Monospace;
+            background-color: #f0f0f0;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+    <script src="lib/three.min.js"></script>
+    <script src="lib/stats.min.js"></script>
+    <script src="lib/Coordinates.js"></script>
+    <script src="lib/OrbitControls.js"></script>
+</head>
+<body>
+
+<script>
+
+    var scene, camera, renderer, controls, stats;
+
+    function Start() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+        renderer = new THREE.WebGLRenderer( {antialias: true} );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild( renderer.domElement );
+
+        camera.position.set(10,40,50);
+        camera.lookAt( new THREE.Vector3(0,0,0));
+
+        const loader = new THREE.TextureLoader();
+
+        hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+        hemiLight.color.setHSL( 0.6, 1, 0.6 );
+        hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+        hemiLight.position.set( 0, 500, 0 );
+        scene.add( hemiLight );
+
+        dirLight = new THREE.PointLight( 0xffffff, 1 );
+        dirLight.color.setHSL( 0.1, 1, 0.95 );
+        dirLight.position.set( 12, 30, 75);
+        scene.add( dirLight );
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+
+        const d = 40;
+
+        dirLight.shadow.camera.left = - d;
+        dirLight.shadow.camera.right = d;
+        dirLight.shadow.camera.top = d;
+        dirLight.shadow.camera.bottom = - d;
+
+        const dirLightHelper = new THREE.CameraHelper( dirLight.shadow.camera );
+        scene.add(dirLightHelper)
+
+        // GROUND
+        var ground_size = 500
+        var map = loader.load('textures/Ground035_2K_Color.jpg')
+        map.wrapS = THREE.RepeatWrapping;
+        map.wrapT = THREE.RepeatWrapping;
+        map.repeat.set( ground_size/3, ground_size/3 );
+        var ao = loader.load('textures/Ground035_2K_AmbientOcclusion.jpg')
+        ao.wrapS = THREE.RepeatWrapping;
+        ao.wrapT = THREE.RepeatWrapping;
+        ao.repeat.set( ground_size/3, ground_size/3 );
+        var normal = loader.load('textures/Ground035_2K_Normal.jpg')
+        normal.wrapS = THREE.RepeatWrapping;
+        normal.wrapT = THREE.RepeatWrapping;
+        normal.repeat.set( ground_size/3, ground_size/3 );
+        var groundGeo = new THREE.PlaneBufferGeometry( ground_size, ground_size );
+        var groundMat = new THREE.MeshPhongMaterial( {
+            map: map,
+            aoMap: ao,
+            normalMap: normal
+        } );
+        var ground = new THREE.Mesh( groundGeo, groundMat );
+        ground.rotation.x = -Math.PI/2;
+        scene.add( ground );
+        ground.receiveShadow = true;
+        ground.castShadow = true;
+
+        // BRICK and PYRAMID
+        var brick_size = 1
+        var room_width = 14
+        var pyramid_width = 3 * room_width + 2
+        var pyramid_height = 3 * room_width / 2 + 1
+        var brick_geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size);
+        var brick_material = [
+                new THREE.MeshPhongMaterial( {
+                map: loader.load('textures/Rock004_2K_Color.jpg'),
+                aoMap: loader.load('textures/Rock004_2K_AmbientOcclusion.jpg'),
+                normalMap: loader.load('textures/Rock004_2K_Normal.jpg')
+            } ),
+            new THREE.MeshPhongMaterial( {
+                map: loader.load('textures/Rock003_2K_Color.jpg'),
+                aoMap: loader.load('textures/Rock003_2K_AmbientOcclusion.jpg'),
+                normalMap: loader.load('textures/Rock003_2K_Normal.jpg')
+            } )
+        ]
+
+        var pyramid = new THREE.Object3D()
+        for(var faces = 0; faces < 4; faces++){
+            var face = new THREE.Object3D()
+            if(faces < 2) {
+                for (var height = 0; height < pyramid_height; height++) {
+                    for (var width = 0; width < pyramid_width - 2 * height; width++) {
+                        brick_matrix = new THREE.Matrix4()
+                        brick_matrix.makeTranslation(-((pyramid_width - 2 * height) / 2 - brick_size / 2) + brick_size * width, brick_size / 2 + height, -brick_size * height)
+                        var brick = new THREE.Mesh(brick_geometry, brick_material[Math.floor(Math.random() * 2)])
+                        brick.matrix = brick_matrix
+                        brick.matrixAutoUpdate = false
+                        face.add(brick)
+                    }
+                }
+            }
+            else{
+                var inner_face_height = pyramid_height - 1
+                var inner_face_width = pyramid_width - 2
+                for (var height = 0; height < inner_face_height; height++) {
+                    for (var width = 0; width < inner_face_width - 2 * height; width++) {
+                        brick_matrix = new THREE.Matrix4()
+                        brick_matrix.makeTranslation(-((inner_face_width - 2 * height) / 2 - brick_size / 2) + brick_size * width, brick_size / 2 + height, -brick_size * height)
+                        var brick = new THREE.Mesh(brick_geometry, brick_material[Math.floor(Math.random() * 2)])
+                        brick.matrix = brick_matrix
+                        brick.matrixAutoUpdate = false
+                        face.add(brick)
+                    }
+                }
+            }
+            face.matrixAutoUpdate = false
+            face.traverseVisible((texture => {
+                texture.castShadow = true
+                texture.receiveShadow = true
+            }))
+            pyramid.add(face)
+            var translation_matrix = new THREE.Matrix4()
+            var rotation_matrix = new THREE.Matrix4()
+            switch(faces){
+                case 0:
+                    translation_matrix.makeTranslation(0, 0, pyramid_height - brick_size/2)
+                    face.matrix = translation_matrix
+                    break
+                case 2:
+                    translation_matrix.makeTranslation(pyramid_height - brick_size/2, 0, 0)
+                    rotation_matrix.makeRotationY(Math.PI * 90/180)
+                    face.matrix = translation_matrix.multiply(rotation_matrix)
+                    break
+                case 1:
+                    translation_matrix.makeTranslation(0, 0, - pyramid_height + brick_size/2)
+                    rotation_matrix.makeRotationY(Math.PI * 180/180)
+                    face.matrix = translation_matrix.multiply(rotation_matrix)
+                    break
+                case 3:
+                    translation_matrix.makeTranslation(-pyramid_height + brick_size/2, 0, 0)
+                    rotation_matrix.makeRotationY(Math.PI * 270/180)
+                    face.matrix = translation_matrix.multiply(rotation_matrix)
+                    break
+            }
+        }
+        scene.add(pyramid)
+
+        // The whole inner pyramid grave object
+        var grave = new THREE.Object3D()
+        grave.position.set(-11, 0, -11)
+        /**
+         *
+         * OUTSIDE WALLS
+         *
+         */
+        function buildWall(x,y,z,dir){
+            let pivot = new THREE.Object3D();
+            pivot.position.set(x,y,z)
+            let increasePositionHor = 0;
+            let increasePositionVer = 0;
+            for(var i=0; i<6; i++){
+                for(var j=0; j<=8; j++){
+                    let cube = new THREE.Mesh(geometry, material)
+                    pivot.add(cube)
+                    if(dir == "ver"){
+                        cube.position.z = increasePositionHor
+                    }else{
+                        cube.position.x = increasePositionHor
+                    }
+                    cube.position.y = increasePositionVer
+                    increasePositionHor += 2
+                }
+                increasePositionHor = 0
+                increasePositionVer += 2
+            }
+            return pivot
+        }
+
+        var texture_grave = loader.load("textures/hiero.jpg")
+        var geometry = new THREE.BoxBufferGeometry(2,2,2);
+        var material = new THREE.MeshPhongMaterial({
+            map: texture_grave
+        })
+
+        var innerBuilding = new THREE.Object3D();
+        var wall1 = buildWall(0,0,0, "ver")
+        var wall2 = buildWall(0,0,0, "hor")
+        var wall3 = buildWall(16,0,0, "ver")
+        var wall4 = buildWall(0,0,16, "hor")
+        innerBuilding.add(wall1)
+        innerBuilding.add(wall2)
+        innerBuilding.add(wall3)
+        grave.add(innerBuilding)
+
+        // Making cubes cast shadows
+        innerBuilding.traverseVisible((wall => {
+            wall.castShadow = true
+            wall.receiveShadow = true
+            wall.traverseVisible((cube => {
+                cube.castShadow = true
+                cube.receiveShadow = true
+            }))
+        }))
+
+        /**
+         *
+         * FLOOR OF THE GRAVE
+         *
+         **/
+        innerBuilding.position.set(3,2,3)
+        var texture_floor = loader.load("textures/grave_wall.jpg")
+        var ground = new THREE.Object3D()
+
+        for(var i=0; i<=22; i+=2){
+            for(var j=0; j<=23; j+=2){
+                var geometry = new THREE.BoxBufferGeometry(2,2,2);
+                var material = new THREE.MeshPhongMaterial({
+                    map: texture_floor
+                })
+                var cube = new THREE.Mesh(geometry, material)
+                cube.position.x = i
+                cube.position.z = j
+                ground.add(cube)
+            }
+        }
+
+        grave.add(ground)
+        ground.castShadow = true
+        ground.receiveShadow = true
+        ground.position.set(0,0,0)
+        ground.traverseVisible((cube =>{
+            cube.castShadow = true
+            cube.receiveShadow = true
+        }))
+
+        scene.add(grave)
+
+
+        /**
+         *
+         * SARCOPHAGUS
+         *
+         */
+
+        var sarcophagus = new THREE.Object3D()
+        var texture_sarcophagus = loader.load("textures/sarc.jpg")
+        texture_sarcophagus.repeat.set( 1, 1 );
+        var geometry_sarcophagus = new THREE.BoxBufferGeometry(1,1,1)
+        var material_sarcophagus = new THREE.MeshPhongMaterial({
+            color: 0x111111,
+            map: texture_sarcophagus
+        })
+        var material_base_sarcophagus = new THREE.MeshPhongMaterial({
+            color: 0x111111
+        })
+
+        // SARCOPHAGUS Base
+        for(var i=0; i<4; i++){
+            for(var j=0; j<8; j++){
+                if(i!=0){
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_sarcophagus)
+                }else{
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_base_sarcophagus)
+                }
+
+                sarcophagus.add(sarc)
+                sarc.position.set(i,0,j)
+            }
+        }
+
+        // SARCOPHAGUS  Wall1
+        for(var i=0; i<4; i++){
+            for(var j=0; j<3; j++){
+                if(j!=0){
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_sarcophagus)
+                }else{
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_base_sarcophagus)
+                }
+                sarcophagus.add(sarc)
+                sarc.position.set(i,j,0)
+            }
+        }
+
+        // SARCOPHAGUS Wall2
+        for(var i=0; i<8; i++){
+            for(var j=0; j<3; j++){
+                if(j!=0){
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_sarcophagus)
+                }else{
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_base_sarcophagus)
+                }
+                sarcophagus.add(sarc)
+                sarc.position.set(0,j,i)
+            }
+        }
+
+        // SARCOPHAGUS Wall3
+        for(var i=0; i<4; i++){
+            for(var j=0; j<3; j++){
+                if(j!=0){
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_sarcophagus)
+                }else{
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_base_sarcophagus)
+                }
+                sarcophagus.add(sarc)
+                sarc.position.set(i,j,8)
+            }
+        }
+
+
+        // SARCOPHAGUS Wall4
+        for(var i=0; i<=8; i++){
+            for(var j=0; j<3; j++){
+                if(j!=0){
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_sarcophagus)
+                }else{
+                    var sarc = new THREE.Mesh(geometry_sarcophagus, material_base_sarcophagus)
+                }
+                sarcophagus.add(sarc)
+                sarc.position.set(4,j,i)
+            }
+        }
+
+
+        grave.add(sarcophagus)
+        sarcophagus.position.set(9,1.5,8)
+
+
+        /**
+         *
+         * DECORATIONS
+         *
+         */
+
+        var pharaoh_head_texture = loader.load("textures/pharaoh1test.jpg")
+        var monument_texture = loader.load("textures/gravestuff.jpg")
+        var pharaoh_geometry = new THREE.BoxBufferGeometry(2,2,2)
+        var pharaoh_head_material = new THREE.MeshPhongMaterial({
+            color: 0xffffff,
+            map: pharaoh_head_texture
+        })
+        var momument_geometry = new THREE.BoxBufferGeometry(3,3,3)
+        var monument_material = new THREE.MeshPhongMaterial({
+            color: 0xffffff,
+            map: monument_texture
+        })
+        var pharaoh_head = new THREE.Mesh(pharaoh_geometry, pharaoh_head_material)
+        var monument = new THREE.Mesh(momument_geometry, monument_material)
+
+        sarcophagus.add(pharaoh_head)
+        pharaoh_head.position.set(2,4,-4.8)
+
+
+        /**
+         *
+         * INNER LIGHTS (with torch)
+         *
+         */
+
+        var geometry_torch = new THREE.BoxBufferGeometry(0.2,0.2,0.2)
+        var material_torch = new THREE.MeshPhongMaterial({
+            color: 0x111111
+        })
+
+        var offset = 5
+        for(var i=0; i<6; i++){
+            var torch = new THREE.Mesh(geometry_torch, material_torch)
+            sarcophagus.add(torch)
+            torch.position.set(2,offset+0.4,-3.9)
+            offset += 0.2
+        }
+
+        var torch_fire = new THREE.MeshPhongMaterial({
+            emissive: 0xfdcf58
+        })
+        var torch_fire_geom = new THREE.BoxBufferGeometry(0.3,0.3,0.3)
+        var torch_light = new THREE.Mesh(torch_fire_geom, torch_fire)
+        sarcophagus.add(torch_light)
+        torch_light.position.set(2,offset+0.4,-3.85)
+
+        var pointLight1 = new THREE.PointLight(0xf07f13,0.5)
+        grave.add(pointLight1)
+        pointLight1.position.set(12,8,5)
+        pointLight1.castShadow = true
+
+        var axesHelper = new THREE.AxesHelper( 5 );
+        scene.add( axesHelper );
+
+        stats = new Stats();
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild( stats.domElement );
+
+        // uncomment if you need to draw coordinate axes when building the scene
+        //Coordinates.drawAllAxes();
+
+        controls = new THREE.OrbitControls( camera );
+        controls.addEventListener( 'change', Render );
+    }
+
+    function Update() {
+        requestAnimationFrame( Update );
+        controls.update();
+        stats.update();
+        Render();
+    }
+
+    function Render() {
+        renderer.render(scene, camera);
+    }
+
+    Start();
+    Update();
+
+</script>
+</body>
+</html>

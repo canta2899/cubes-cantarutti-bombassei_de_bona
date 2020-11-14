@@ -20,20 +20,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/textures/floor_3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/textures/wall_3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_code_bombassei.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground035_2K_AmbientOcclusion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground035_2K_Color.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground035_2K_Normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground035_2K_Roughness.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock003_2K_AmbientOcclusion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock003_2K_Color.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock003_2K_Normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock004_2K_AmbientOcclusion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock004_2K_Color.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock004_2K_Normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Rock004_2K_Roughness.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StartingCode-nolights.html" beforeDir="false" afterPath="$PROJECT_DIR$/StartingCode-nolights.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_code_Bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_Bombassei.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_b020.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_d100.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles+09_s100+g100.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_b010.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_d100.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-42_s100-g100.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-48_b015.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/arroway.de_tiles-48_s100-g100-r050.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/textures/holzv2_10.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,10 +67,16 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="13.13.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="13.13.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Francesco\Desktop\cubes-cantarutti-bombassei_de_bona" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -79,6 +87,10 @@
       <option name="presentableId" value="Default" />
       <updated>1605288162436</updated>
       <workItem from="1605288163505" duration="4313000" />
+      <workItem from="1605298736652" duration="45000" />
+      <workItem from="1605298866991" duration="14409000" />
+      <workItem from="1605350821905" duration="4222000" />
+      <workItem from="1605385458567" duration="8430000" />
     </task>
     <servers />
   </component>
@@ -95,14 +107,28 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605309931841">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1605309931841" />
+    <state x="740" y="295" key="FileChooserDialogImpl" timestamp="1605386976921">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="295" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1605386976921" />
     <state x="461" y="185" key="SettingsEditor" timestamp="1605288299727">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="461" y="185" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605288299727" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605391101932">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1605302075768" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605391101932" />
   </component>
 </project>
