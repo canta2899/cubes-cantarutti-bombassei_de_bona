@@ -20,6 +20,7 @@
     <script src="lib/stats.min.js"></script>
     <script src="lib/Coordinates.js"></script>
     <script src="lib/OrbitControls.js"></script>
+    <script src="lib/dat.gui.min.js"></script>
 </head>
 <body>
 <script type="x-shader/x-vertex" id="vertexShader">
@@ -60,6 +61,18 @@
     var scene, camera, renderer, controls, stats;
     var count = 0
     var small_pyramid = []
+    var static = true
+    animationOn = false
+    var params = {
+        toggleAnimation: toggleAnimation
+    }
+    const gui = new dat.gui.GUI({name: "Controls"})
+    gui.add( params, 'toggleAnimation', true).name( "Pyramid" );
+
+    function toggleAnimation(){
+        static = false
+        animationOn = !animationOn
+    }
 
     function Start() {
         scene = new THREE.Scene();
@@ -73,7 +86,6 @@
         renderer.gammaInput = true;
         renderer.gammaOutput = true;
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.body.appendChild( renderer.domElement );
 
         camera.position.set(10,40,50);
@@ -284,6 +296,7 @@
         innerBuilding.add(wall1)
         innerBuilding.add(wall2)
         innerBuilding.add(wall3)
+        innerBuilding.add(wall4)
         grave.add(innerBuilding)
 
         // Making cubes cast shadows
@@ -477,8 +490,8 @@
         pointLight1.position.set(12,8,5)
         pointLight1.castShadow = true
 
-        var axesHelper = new THREE.AxesHelper( 5 );
-        scene.add( axesHelper );
+        // var axesHelper = new THREE.AxesHelper( 5 );
+        // scene.add( axesHelper );
 
         stats = new Stats();
         stats.domElement.style.position = 'absolute';
@@ -498,14 +511,33 @@
         requestAnimationFrame( Update );
         controls.update();
         stats.update();
-        count++
-        if(count < 1500) {
-            var translation_matrix = new THREE.Matrix4()
-            translation_matrix.makeTranslation(0.01, 0, 0)
+        if(!static){
+            if(animationOn){
+                count++
+                if(count < 1500) {
+                    var translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(0.01, 0, 0)
+                }else{
+                    static = true
+                }
+                small_pyramid.forEach(function (obj){
+                    obj.applyMatrix(translation_matrix)
+                })
+            }
+
+            if(!animationOn){
+                count--
+                if(count > 0){
+                    var translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(-0.01, 0, 0) 
+                }else{
+                    static = true
+                }
+                small_pyramid.forEach(function (obj){
+                    obj.applyMatrix(translation_matrix)
+                })
+            }
         }
-        small_pyramid.forEach(function (obj){
-            obj.applyMatrix(translation_matrix)
-        })
         Render();
     }
 

@@ -287,15 +287,23 @@
 
 			var pointLight1 = new THREE.PointLight(0xf07f13,0.5)
 			grave.add(pointLight1)
-			pointLight1.position.set(12,8,5)
+			pointLight1.position.set(11,8,5)
 
 			var pointLight2 = new THREE.PointLight(0xf07f13,0.1)
 			grave.add(pointLight2)
-			pointLight2.position.set(6,8,12)
+			pointLight2.position.set(5,8,12)
 
 			var pointLight3 = new THREE.PointLight(0xf07f13,0.1)
 			grave.add(pointLight3)
-			pointLight3.position.set(18,8,12)
+			pointLight3.position.set(17,8,12)
+
+			// const pointLightHelper1 = new THREE.PointLightHelper( pointLight1, 1 );
+			// scene.add( pointLightHelper1 );
+			// const pointLightHelper2 = new THREE.PointLightHelper( pointLight2, 1 );
+			// scene.add( pointLightHelper2 );
+			// const pointLightHelper3 = new THREE.PointLightHelper( pointLight3, 1 );
+			// scene.add( pointLightHelper3 );
+
 			
 			var ambientLight = new THREE.AmbientLight(0xcccccc, 0.05)
 			grave.add(ambientLight)
