@@ -60,7 +60,10 @@
 <script>
 
     var scene, camera, renderer, controls, stats;
-    var count = 0
+    var room_width = 14
+    var brick_size = 1
+    var pyramid_width = 3 * room_width + 2
+    var pyramid_height = 3 * room_width / 2 + 1
     var top_pyramid = []
     var showStatic = true
     animationOn = false
@@ -168,10 +171,6 @@
         scene.add( sky );
 
         // BRICK and PYRAMID
-        var brick_size = 1
-        var room_width = 14
-        var pyramid_width = 3 * room_width + 2
-        var pyramid_height = 3 * room_width / 2 + 1
         var brick_geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size);
         var brick_material = new THREE.MeshPhongMaterial( {
                 map: loader.load('textures/Rock004_2K_Color.jpg'),
@@ -256,6 +255,7 @@
             mesh.castShadow = true
             mesh.receiveShadow = true
             pyramid.add(mesh)
+            top_pyramid.push(mesh)
         })
 
 
@@ -521,29 +521,27 @@
         stats.update();
         if(!showStatic){
             if(animationOn){
-                count++
-                if(count < 1500) {
+                if(top_pyramid[0].position.x - brick_size/2 <= room_width + 1) {
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(0.01, 0, 0)
+                    translation_matrix.makeTranslation(0.5, 0, 0)
+                    top_pyramid.forEach(function (obj){
+                        obj.applyMatrix(translation_matrix)
+                    })
                 }else{
                     showStatic = true
                 }
-                small_pyramid.forEach(function (obj){
-                    obj.applyMatrix(translation_matrix)
-                })
             }
 
             if(!animationOn){
-                count--
-                if(count > 0){
+                if(top_pyramid[0].position.x - brick_size/2 >= 0){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(-0.01, 0, 0) 
+                    translation_matrix.makeTranslation(-0.5, 0, 0)
+                    top_pyramid.forEach(function (obj){
+                        obj.applyMatrix(translation_matrix)
+                    })
                 }else{
                     showStatic = true
                 }
-                small_pyramid.forEach(function (obj){
-                    obj.applyMatrix(translation_matrix)
-                })
             }
         }
         Render();
