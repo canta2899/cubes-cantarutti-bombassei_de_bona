@@ -22,13 +22,49 @@
     <script src="lib/OrbitControls.js"></script>
 </head>
 <body>
+<script type="x-shader/x-vertex" id="vertexShader">
+
+			varying vec3 vWorldPosition;
+
+			void main() {
+
+				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+				vWorldPosition = worldPosition.xyz;
+
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+		</script>
+
+<script type="x-shader/x-fragment" id="fragmentShader">
+
+			uniform vec3 topColor;
+			uniform vec3 bottomColor;
+			uniform float offset;
+			uniform float exponent;
+
+			varying vec3 vWorldPosition;
+
+			void main() {
+
+				float h = normalize( vWorldPosition + offset ).y;
+				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
+
+			}
+
+		</script>
 
 <script>
 
     var scene, camera, renderer, controls, stats;
+    var count = 0
+    var small_pyramid = []
 
     function Start() {
         scene = new THREE.Scene();
+        scene.background = new THREE.Color().setHSL( 0.6, 0, 1 );
+        scene.fog = new THREE.Fog( scene.background, 1, 5000 );
         camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
         renderer = new THREE.WebGLRenderer( {antialias: true} );
@@ -66,9 +102,6 @@
         dirLight.shadow.camera.top = d;
         dirLight.shadow.camera.bottom = - d;
 
-        const dirLightHelper = new THREE.CameraHelper( dirLight.shadow.camera );
-        scene.add(dirLightHelper)
-
         // GROUND
         var ground_size = 500
         var map = loader.load('textures/Ground035_2K_Color.jpg')
@@ -94,6 +127,30 @@
         scene.add( ground );
         ground.receiveShadow = true;
         ground.castShadow = true;
+
+        // DOME
+        const vertexShader = document.getElementById( 'vertexShader' ).textContent;
+        const fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+        const uniforms = {
+            "topColor": { value: new THREE.Color( 0x0077ff ) },
+            "bottomColor": { value: new THREE.Color( 0xffffff ) },
+            "offset": { value: 33 },
+            "exponent": { value: 0.6 }
+        };
+        uniforms[ "topColor" ].value.copy( hemiLight.color );
+
+        scene.fog.color.copy( uniforms[ "bottomColor" ].value );
+
+        const skyGeo = new THREE.SphereBufferGeometry(ground_size/2, 32, 15 );
+        const skyMat = new THREE.ShaderMaterial( {
+            uniforms: uniforms,
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            side: THREE.BackSide
+        } );
+
+        const sky = new THREE.Mesh( skyGeo, skyMat );
+        scene.add( sky );
 
         // BRICK and PYRAMID
         var brick_size = 1
@@ -126,6 +183,8 @@
                         brick.matrix = brick_matrix
                         brick.matrixAutoUpdate = false
                         face.add(brick)
+                        if(height >= 14)
+                            small_pyramid.push(brick)
                     }
                 }
             }
@@ -140,6 +199,8 @@
                         brick.matrix = brick_matrix
                         brick.matrixAutoUpdate = false
                         face.add(brick)
+                        if(height >= 14)
+                            small_pyramid.push(brick)
                     }
                 }
             }
@@ -173,6 +234,7 @@
                     break
             }
         }
+        pyramid.scale.set(0.5, 0.5, 0.5)
         scene.add(pyramid)
 
         // The whole inner pyramid grave object
@@ -263,7 +325,7 @@
             cube.receiveShadow = true
         }))
 
-        scene.add(grave)
+        pyramid.add(grave)
 
 
         /**
@@ -425,6 +487,8 @@
         //Coordinates.drawAllAxes();
 
         controls = new THREE.OrbitControls( camera );
+        controls.maxPolarAngle = Math.PI * 89/180
+        controls.maxDistance = ground_size/2
         controls.addEventListener( 'change', Render );
     }
 
@@ -432,6 +496,14 @@
         requestAnimationFrame( Update );
         controls.update();
         stats.update();
+        count++
+        if(count < 1500) {
+            var translation_matrix = new THREE.Matrix4()
+            translation_matrix.makeTranslation(0.01, 0, 0)
+        }
+        small_pyramid.forEach(function (obj){
+            obj.applyMatrix(translation_matrix)
+        })
         Render();
     }
 
