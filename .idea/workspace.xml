@@ -19,8 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Brick and Pyramid">
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+    <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Working on ambient and animations">
+      <change afterPath="$PROJECT_DIR$/textures/Ground033_2K_AmbientOcclusion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground033_2K_Color.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground033_2K_Normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground034_2K_AmbientOcclusion.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground034_2K_Color.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Ground034_2K_Normal.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_code_bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_bombassei.html" afterDir="false" />
     </list>
@@ -79,7 +84,7 @@
       <workItem from="1605298866991" duration="14409000" />
       <workItem from="1605350821905" duration="4222000" />
       <workItem from="1605385458567" duration="8868000" />
-      <workItem from="1605394911248" duration="4389000" />
+      <workItem from="1605394911248" duration="5103000" />
     </task>
     <task id="LOCAL-00001" summary="Brick and Pyramid">
       <created>1605394041508</created>
@@ -88,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605394041508</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Working on ambient and animations">
+      <created>1605399453431</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1605399453431</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,7 +121,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Brick and Pyramid" />
-    <option name="LAST_COMMIT_MESSAGE" value="Brick and Pyramid" />
+    <MESSAGE value="Working on ambient and animations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on ambient and animations" />
   </component>
   <component name="WindowStateProjectService">
     <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605309931841">
@@ -124,10 +137,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="461" y="185" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605288299727" />
-    <state x="552" y="273" key="Vcs.Push.Dialog.v2" timestamp="1605394062022">
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2" timestamp="1605399455032">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="552" y="273" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605394062022" />
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605399455032" />
     <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605391101932">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

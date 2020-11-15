@@ -104,23 +104,24 @@
 
         // GROUND
         var ground_size = 500
-        var map = loader.load('textures/Ground035_2K_Color.jpg')
+        var map = loader.load('textures/Ground033_2K_Color.jpg')
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
-        map.repeat.set( ground_size/3, ground_size/3 );
-        var ao = loader.load('textures/Ground035_2K_AmbientOcclusion.jpg')
+        map.repeat.set( ground_size/7, ground_size/7 );
+        var ao = loader.load('textures/Ground033_2K_AmbientOcclusion.jpg')
         ao.wrapS = THREE.RepeatWrapping;
         ao.wrapT = THREE.RepeatWrapping;
-        ao.repeat.set( ground_size/3, ground_size/3 );
-        var normal = loader.load('textures/Ground035_2K_Normal.jpg')
+        ao.repeat.set( ground_size/7, ground_size/7 );
+        var normal = loader.load('textures/Ground033_2K_Normal.jpg')
         normal.wrapS = THREE.RepeatWrapping;
         normal.wrapT = THREE.RepeatWrapping;
-        normal.repeat.set( ground_size/3, ground_size/3 );
+        normal.repeat.set( ground_size/7, ground_size/7 );
         var groundGeo = new THREE.PlaneBufferGeometry( ground_size, ground_size );
         var groundMat = new THREE.MeshPhongMaterial( {
             map: map,
             aoMap: ao,
-            normalMap: normal
+            normalMap: normal,
+            shininess: 0
         } );
         var ground = new THREE.Mesh( groundGeo, groundMat );
         ground.rotation.x = -Math.PI/2;
