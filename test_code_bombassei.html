@@ -20,6 +20,7 @@
     <script src="lib/stats.min.js"></script>
     <script src="lib/Coordinates.js"></script>
     <script src="lib/OrbitControls.js"></script>
+    <script src="lib/BufferGeometryUtils.js"></script>
     <script src="lib/dat.gui.min.js"></script>
 </head>
 <body>
@@ -60,8 +61,8 @@
 
     var scene, camera, renderer, controls, stats;
     var count = 0
-    var small_pyramid = []
-    var static = true
+    var top_pyramid = []
+    var showStatic = true
     animationOn = false
     var params = {
         toggleAnimation: toggleAnimation
@@ -70,7 +71,7 @@
     gui.add( params, 'toggleAnimation', true).name( "Pyramid" );
 
     function toggleAnimation(){
-        static = false
+        showStatic = false
         animationOn = !animationOn
     }
 
@@ -172,84 +173,91 @@
         var pyramid_width = 3 * room_width + 2
         var pyramid_height = 3 * room_width / 2 + 1
         var brick_geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size);
-        var brick_material = [
-                new THREE.MeshPhongMaterial( {
+        var brick_material = new THREE.MeshPhongMaterial( {
                 map: loader.load('textures/Rock004_2K_Color.jpg'),
                 aoMap: loader.load('textures/Rock004_2K_AmbientOcclusion.jpg'),
                 normalMap: loader.load('textures/Rock004_2K_Normal.jpg')
-            } ),
-            new THREE.MeshPhongMaterial( {
-                map: loader.load('textures/Rock003_2K_Color.jpg'),
-                aoMap: loader.load('textures/Rock003_2K_AmbientOcclusion.jpg'),
-                normalMap: loader.load('textures/Rock003_2K_Normal.jpg')
             } )
-        ]
 
         var pyramid = new THREE.Object3D()
-        for(var faces = 0; faces < 4; faces++){
-            var face = new THREE.Object3D()
-            if(faces < 2) {
-                for (var height = 0; height < pyramid_height; height++) {
-                    for (var width = 0; width < pyramid_width - 2 * height; width++) {
-                        brick_matrix = new THREE.Matrix4()
-                        brick_matrix.makeTranslation(-((pyramid_width - 2 * height) / 2 - brick_size / 2) + brick_size * width, brick_size / 2 + height, -brick_size * height)
-                        var brick = new THREE.Mesh(brick_geometry, brick_material[Math.floor(Math.random() * 2)])
-                        brick.matrix = brick_matrix
-                        brick.matrixAutoUpdate = false
-                        face.add(brick)
-                        if(height >= 14)
-                            small_pyramid.push(brick)
-                    }
+        var bricks = []
+        var floor_width, geometry, translation_matrix
+        for(var height = 0; height <= room_width - 2; height++){
+            floor_width = pyramid_width - 2 * height
+            for(var floor_perimeter = 0; floor_perimeter < floor_width * 4 - 4; floor_perimeter++){
+                geometry = brick_geometry.clone()
+                if(floor_perimeter < floor_width){
+                    translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
+                    geometry.applyMatrix(translation_matrix)
                 }
-            }
-            else{
-                var inner_face_height = pyramid_height - 1
-                var inner_face_width = pyramid_width - 2
-                for (var height = 0; height < inner_face_height; height++) {
-                    for (var width = 0; width < inner_face_width - 2 * height; width++) {
-                        brick_matrix = new THREE.Matrix4()
-                        brick_matrix.makeTranslation(-((inner_face_width - 2 * height) / 2 - brick_size / 2) + brick_size * width, brick_size / 2 + height, -brick_size * height)
-                        var brick = new THREE.Mesh(brick_geometry, brick_material[Math.floor(Math.random() * 2)])
-                        brick.matrix = brick_matrix
-                        brick.matrixAutoUpdate = false
-                        face.add(brick)
-                        if(height >= 14)
-                            small_pyramid.push(brick)
-                    }
+                else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
+                    translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
+                    geometry.applyMatrix(translation_matrix)
                 }
-            }
-            face.matrixAutoUpdate = false
-            face.traverseVisible((texture => {
-                texture.castShadow = true
-                texture.receiveShadow = true
-            }))
-            pyramid.add(face)
-            var translation_matrix = new THREE.Matrix4()
-            var rotation_matrix = new THREE.Matrix4()
-            switch(faces){
-                case 0:
-                    translation_matrix.makeTranslation(0, 0, pyramid_height - brick_size/2)
-                    face.matrix = translation_matrix
-                    break
-                case 2:
-                    translation_matrix.makeTranslation(pyramid_height - brick_size/2, 0, 0)
-                    rotation_matrix.makeRotationY(Math.PI * 90/180)
-                    face.matrix = translation_matrix.multiply(rotation_matrix)
-                    break
-                case 1:
-                    translation_matrix.makeTranslation(0, 0, - pyramid_height + brick_size/2)
-                    rotation_matrix.makeRotationY(Math.PI * 180/180)
-                    face.matrix = translation_matrix.multiply(rotation_matrix)
-                    break
-                case 3:
-                    translation_matrix.makeTranslation(-pyramid_height + brick_size/2, 0, 0)
-                    rotation_matrix.makeRotationY(Math.PI * 270/180)
-                    face.matrix = translation_matrix.multiply(rotation_matrix)
-                    break
+                else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
+                    translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
+                    geometry.applyMatrix(translation_matrix)
+                }
+                else{
+                    translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation( - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width * 3 - 3)
+                    geometry.applyMatrix(translation_matrix)
+                }
+                bricks.push(geometry)
             }
         }
-        pyramid.scale.set(0.5, 0.5, 0.5)
+        var geometriesBricks = THREE.BufferGeometryUtils.mergeBufferGeometries(bricks);
+        var truncated_pyramid = new THREE.Mesh(geometriesBricks, brick_material)
+        truncated_pyramid.castShadow=true
+        truncated_pyramid.receiveShadow=true
+        pyramid.add(truncated_pyramid)
         scene.add(pyramid)
+
+        var south_face = []
+        var east_face = []
+        var north_face = []
+        var west_face = []
+        for(var height = room_width - 1; height < pyramid_height ; height++){
+            var floor_width = pyramid_width - 2 * height
+            for(var floor_perimeter = 0; floor_perimeter < floor_width * 4 - 4; floor_perimeter++){
+                geometry = brick_geometry.clone()
+                if(floor_perimeter < floor_width){
+                    var translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
+                    geometry.applyMatrix(translation_matrix)
+                    south_face.push(geometry)
+                }
+                else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
+                    var translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
+                    geometry.applyMatrix(translation_matrix)
+                    east_face.push(geometry)
+                }
+                else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
+                    var translation_matrix = new THREE.Matrix4()
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
+                    geometry.applyMatrix(translation_matrix)
+                    north_face.push(geometry)
+                }
+                else {
+                    translation_matrix.makeTranslation(-floor_width / 2 + brick_size / 2, height + brick_size / 2, floor_width / 2 - brick_size / 2 - floor_perimeter + floor_width * 3 - 3)
+                    geometry.applyMatrix(translation_matrix)
+                    west_face.push(geometry)
+                }
+            }
+        }
+        var faces = [south_face, east_face, north_face, west_face]
+        faces.forEach(face => {
+            geometriesBricks = THREE.BufferGeometryUtils.mergeBufferGeometries(face)
+            var mesh = new THREE.Mesh(geometriesBricks, brick_material)
+            mesh.castShadow = true
+            mesh.receiveShadow = true
+            pyramid.add(mesh)
+        })
+
 
         // The whole inner pyramid grave object
         var grave = new THREE.Object3D()
@@ -511,14 +519,14 @@
         requestAnimationFrame( Update );
         controls.update();
         stats.update();
-        if(!static){
+        if(!showStatic){
             if(animationOn){
                 count++
                 if(count < 1500) {
                     var translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(0.01, 0, 0)
                 }else{
-                    static = true
+                    showStatic = true
                 }
                 small_pyramid.forEach(function (obj){
                     obj.applyMatrix(translation_matrix)
@@ -531,7 +539,7 @@
                     var translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(-0.01, 0, 0) 
                 }else{
-                    static = true
+                    showStatic = true
                 }
                 small_pyramid.forEach(function (obj){
                     obj.applyMatrix(translation_matrix)

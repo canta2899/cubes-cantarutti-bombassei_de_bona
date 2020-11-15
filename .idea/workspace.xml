@@ -19,7 +19,17 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Working on ambient and animations" />
+    <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Pyramid draw calls optimization">
+      <change afterPath="$PROJECT_DIR$/lib/BufferGeometryUtils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/three.module.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cubes-cantarutti-bombassei_de_bona.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cubes-cantarutti-bombassei_de_bona.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/three.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/three.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/three.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/three.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_code_bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_bombassei.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,11 +39,13 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectId" id="1kFEuZwxuYQehytI4kDEHzv2ElL" />
   <component name="ProjectLevelVcsManager">
@@ -76,6 +88,10 @@
       <workItem from="1605350821905" duration="4222000" />
       <workItem from="1605385458567" duration="8868000" />
       <workItem from="1605394911248" duration="5409000" />
+      <workItem from="1605400473516" duration="167000" />
+      <workItem from="1605400697442" duration="289000" />
+      <workItem from="1605444454699" duration="6344000" />
+      <workItem from="1605450991387" duration="6739000" />
     </task>
     <task id="LOCAL-00001" summary="Brick and Pyramid">
       <created>1605394041508</created>
@@ -98,7 +114,21 @@
       <option name="project" value="LOCAL" />
       <updated>1605400206052</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Working on ambient and animations">
+      <created>1605400491644</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605400491644</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Working on ambient and animations">
+      <created>1605400620106</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605400620106</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,13 +150,18 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Brick and Pyramid" />
     <MESSAGE value="Working on ambient and animations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working on ambient and animations" />
+    <MESSAGE value="Pyramid draw calls optimization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Pyramid draw calls optimization" />
   </component>
   <component name="WindowStateProjectService">
     <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605309931841">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1605309931841" />
+    <state x="92" y="92" width="1736" height="896" key="DiffContextDialog" timestamp="1605444823899">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="92" y="92" width="1736" height="896" key="DiffContextDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605444823899" />
     <state x="740" y="295" key="FileChooserDialogImpl" timestamp="1605386976921">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -135,14 +170,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="461" y="185" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605288299727" />
-    <state x="552" y="273" key="Vcs.Push.Dialog.v2" timestamp="1605400207422">
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2" timestamp="1605400627528">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="552" y="273" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605400207422" />
-    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605391101932">
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605400627528" />
+    <state x="92" y="92" width="776" height="896" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1605446893681">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="92" y="92" width="776" height="896" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605446893681" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605446285184">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1605302075768" />
-    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605391101932" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605446285184" />
+    <state x="187" y="139" width="585" height="801" key="find.popup" timestamp="1605449463087">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="187" y="139" width="585" height="801" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1605449463087" />
   </component>
 </project>
