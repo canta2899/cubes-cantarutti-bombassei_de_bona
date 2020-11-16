@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Pyramid draw calls optimization">
+      <change afterPath="$PROJECT_DIR$/textures/Bark.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Leaf.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_code_bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_bombassei.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="ProjectId" id="1kFEuZwxuYQehytI4kDEHzv2ElL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="13.13.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="13.13.0" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Francesco\Desktop\cubes-cantarutti-bombassei_de_bona" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="" />
+      <created>1605288162436</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605288162436</updated>
+      <workItem from="1605288163505" duration="4313000" />
+      <workItem from="1605298736652" duration="45000" />
+      <workItem from="1605298866991" duration="14409000" />
+      <workItem from="1605350821905" duration="4222000" />
+      <workItem from="1605385458567" duration="8868000" />
+      <workItem from="1605394911248" duration="5409000" />
+      <workItem from="1605400473516" duration="167000" />
+      <workItem from="1605400697442" duration="289000" />
+      <workItem from="1605444454699" duration="6344000" />
+      <workItem from="1605450991387" duration="6739000" />
+      <workItem from="1605457815824" duration="1729000" />
+      <workItem from="1605461869060" duration="21427000" />
+    </task>
+    <task id="LOCAL-00001" summary="Brick and Pyramid">
+      <created>1605394041508</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1605394041508</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Working on ambient and animations">
+      <created>1605399453431</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1605399453431</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Working on ambient and animations">
+      <created>1605400206052</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1605400206052</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Working on ambient and animations">
+      <created>1605400491644</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1605400491644</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Working on ambient and animations">
+      <created>1605400620106</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1605400620106</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Working on pyramid draw calls optimization">
+      <created>1605457969323</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1605457969323</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Brick and Pyramid" />
+    <MESSAGE value="Working on ambient and animations" />
+    <MESSAGE value="Pyramid draw calls optimization" />
+    <MESSAGE value="Working on pyramid draw calls optimization" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on pyramid draw calls optimization" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605309931841">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="242" y="345" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1605309931841" />
+    <state x="92" y="92" width="1736" height="896" key="DiffContextDialog" timestamp="1605444823899">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="92" y="92" width="1736" height="896" key="DiffContextDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605444823899" />
+    <state x="740" y="295" key="FileChooserDialogImpl" timestamp="1605386976921">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="295" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1605386976921" />
+    <state x="461" y="185" key="SettingsEditor" timestamp="1605288299727">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="461" y="185" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1605288299727" />
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2" timestamp="1605457971880">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="552" y="273" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605457971880" />
+    <state x="92" y="92" width="776" height="896" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1605446893681">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="92" y="92" width="776" height="896" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1605446893681" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605446285184">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080/-1920.0.1920.1080@0.0.1920.1080" timestamp="1605302075768" />
+    <state x="1257" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1605446285184" />
+    <state x="187" y="139" width="585" height="801" key="find.popup" timestamp="1605449463087">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="187" y="139" width="585" height="801" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1605449463087" />
+  </component>
+</project>
