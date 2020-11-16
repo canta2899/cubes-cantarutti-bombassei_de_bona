@@ -87,7 +87,7 @@
     }
 
     const gui = new dat.gui.GUI({name: "Controls"})
-    gui.add( params, 'toggleAnimation', true).name( "Pyramid" );
+    gui.add( params, 'toggleAnimation', true).name( "Magic" );
 
     /**
     * INITIALIZE THE SCENE
@@ -114,8 +114,6 @@
         renderer.gammaOutput = true
         document.body.appendChild( renderer.domElement );
 
-
-        // Pivot for camera animations
 
         setUpLights()
 
@@ -270,22 +268,30 @@
                 geometry = brick_geometry.clone()
                 if(floor_perimeter < floor_width){
                     translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       floor_width/2 - brick_size/2)
                     geometry.applyMatrix4(translation_matrix)
                 }
                 else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
                     translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
+                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
                     geometry.applyMatrix4(translation_matrix)
                 }
                 else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
                     translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       - floor_width/2 + brick_size/2)
                     geometry.applyMatrix4(translation_matrix)
                 }
                 else{
                     translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation( - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width * 3 - 3)
+                    translation_matrix.makeTranslation( - floor_width/2 + brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       floor_width/2 - brick_size/2 - floor_perimeter + floor_width * 3 - 3)
                     geometry.applyMatrix4(translation_matrix)
                 }
                 bricks.push(geometry)
@@ -308,24 +314,32 @@
                 geometry = brick_geometry.clone()
                 if(floor_perimeter < floor_width){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       floor_width/2 - brick_size/2)
                     geometry.applyMatrix4(translation_matrix)
                     south_face.push(geometry)
                 }
                 else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
+                    translation_matrix.makeTranslation(floor_width/2 - brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
                     geometry.applyMatrix4(translation_matrix)
                     east_face.push(geometry)
                 }
                 else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
+                    translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, 
+                                                       height + brick_size/2, 
+                                                       - floor_width/2 + brick_size/2)
                     geometry.applyMatrix4(translation_matrix)
                     north_face.push(geometry)
                 }
                 else {
-                    translation_matrix.makeTranslation(-floor_width / 2 + brick_size / 2, height + brick_size / 2, floor_width / 2 - brick_size / 2 - floor_perimeter + floor_width * 3 - 3)
+                    translation_matrix.makeTranslation(-floor_width / 2 + brick_size / 2, 
+                                                        height + brick_size / 2, 
+                                                        floor_width / 2 - brick_size / 2 - floor_perimeter + floor_width * 3 - 3)
                     geometry.applyMatrix4(translation_matrix)
                     west_face.push(geometry)
                 }
