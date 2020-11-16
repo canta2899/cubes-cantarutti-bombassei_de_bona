@@ -52,10 +52,10 @@ We, then, captured the whole scene's camera animation through QuickTime player a
 More informations about the process have been reported in the **journal markdown file**. 
 
 You can directly download the video and/or audio from the following links:
-* [Video](https://cantarutti-bombassei-3dgraphics.s3-eu-west-1.amazonaws.com/video.mov)
-* [Audio](https://cantarutti-bombassei-3dgraphics.s3-eu-west-1.amazonaws.com/interactive.wav)
+* [Video](https://cantarutti-bombassei-3dgraphics.s3-eu-west-1.amazonaws.com/video.mov){:target="_blank"}
+* [Audio](https://cantarutti-bombassei-3dgraphics.s3-eu-west-1.amazonaws.com/interactive.wav){:target="_blank"}
 
-If you just want to take a quick look at the result you can [watch it on YouTube](https://youtu.be/NO5eCB_IUVA).
+If you just want to take a quick look at the result you can [watch it on YouTube](https://youtu.be/NO5eCB_IUVA){:target="_blank"}.
 
 
 ## Building the scene
