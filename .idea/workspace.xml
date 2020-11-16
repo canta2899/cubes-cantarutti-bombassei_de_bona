@@ -20,6 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b65e4a8-282f-41df-a9d8-5b14f8e53527" name="Default Changelist" comment="Pyramid draw calls optimization">
+      <change afterPath="$PROJECT_DIR$/textures/Bark.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/textures/Leaf.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_code_bombassei.html" beforeDir="false" afterPath="$PROJECT_DIR$/test_code_bombassei.html" afterDir="false" />
     </list>
@@ -86,6 +88,7 @@
       <workItem from="1605444454699" duration="6344000" />
       <workItem from="1605450991387" duration="6739000" />
       <workItem from="1605457815824" duration="1729000" />
+      <workItem from="1605461869060" duration="21427000" />
     </task>
     <task id="LOCAL-00001" summary="Brick and Pyramid">
       <created>1605394041508</created>

@@ -22,7 +22,6 @@
     <script src="lib/OrbitControls.js"></script>
     <script src="lib/BufferGeometryUtils.js"></script>
     <script src="lib/dat.gui.min.js"></script>
-    <script src="lib/gsap.min.js"></script>
 </head>
 <body>
 <script type="x-shader/x-vertex" id="vertexShader">
@@ -59,18 +58,30 @@
 		</script>
 
 <script>
+    var scene, camera, renderer, controls, stats, pivot_camera;
 
-<<<<<<< Updated upstream
-    var scene, camera, renderer, controls, stats;
-    var room_width = 14
+    var ground_size = 500
+
     var brick_size = 1
+    var room_width = 14
+
     var pyramid_width = 3 * room_width + 2
     var pyramid_height = 3 * room_width / 2 + 1
-=======
-    var scene, camera, renderer, controls, stats, pivot_camera;
+
+    var topPyramid = []
+
+    var trees = []
+
+    var treeRotationAngle = 0
+    var levitationHeight = 0
+    var lightRotationAngle = 0
+
     var count = 0
->>>>>>> Stashed changes
-    var top_pyramid = []
+
+    var dirLight
+
+    const loader = new THREE.TextureLoader();
+
     var showStatic = true
     animationOn = false
     var params = {
@@ -93,9 +104,9 @@
         renderer = new THREE.WebGLRenderer( {antialias: true} );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
         renderer.shadowMap.enabled = true;
+        renderer.gammaInput = true
+        renderer.gammaOutput = true
         document.body.appendChild( renderer.domElement );
 
         pivot_camera = new THREE.Object3D()
@@ -104,37 +115,65 @@
         camera.position.set(10,40,50);
         camera.lookAt( new THREE.Vector3(0,0,0));
 
-        const loader = new THREE.TextureLoader();
+        setUpLights()
 
-        hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+        setUpScenario()
+
+        buildPyramid()
+
+        growPalms(50)
+
+        // var axesHelper = new THREE.AxesHelper( 5 );
+        // scene.add( axesHelper );
+
+        stats = new Stats();
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.top = '0px';
+        document.body.appendChild( stats.domElement );
+
+        // uncomment if you need to draw coordinate axes when building the scene
+        //Coordinates.drawAllAxes();
+
+        controls = new THREE.OrbitControls( camera );
+        controls.maxPolarAngle = Math.PI * 89/180
+        controls.maxDistance = ground_size/2
+        controls.addEventListener( 'change', Render );
+    }
+
+    function setUpLights(){
+        hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.2 );
         hemiLight.color.setHSL( 0.6, 1, 0.6 );
         hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
         hemiLight.position.set( 0, 200, 0 );
         scene.add( hemiLight );
 
         const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
-		scene.add( hemiLightHelper );
+        scene.add( hemiLightHelper );
 
         dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
         dirLight.color.setHSL( 0.1, 1, 0.95 );
-        dirLight.position.set( 100, 50, 150);
-        scene.add( dirLight );
+        dirLight.position.set( 100, 150, ground_size/2);
+        dirLight.pivot = new THREE.Object3D()
+        dirLight.pivot.add( dirLight );
         dirLight.castShadow = true;
         dirLight.shadow.mapSize.width = 1024;
         dirLight.shadow.mapSize.height = 1024;
+        scene.add(dirLight.pivot)
 
         const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
-		scene.add( dirLightHelper );
+        scene.add( dirLightHelper );
 
-        const d = 40;
+        const d = 256;
 
         dirLight.shadow.camera.left = - d;
         dirLight.shadow.camera.right = d;
         dirLight.shadow.camera.top = d;
         dirLight.shadow.camera.bottom = - d;
 
+    }
+
+    function setUpScenario() {
         // GROUND
-        var ground_size = 500
         var map = loader.load('textures/Ground033_2K_Color.jpg')
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
@@ -184,14 +223,15 @@
 
         const sky = new THREE.Mesh( skyGeo, skyMat );
         scene.add( sky );
+    }
 
-        // BRICK and PYRAMID
+    function buildPyramid(){
         var brick_geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size);
         var brick_material = new THREE.MeshPhongMaterial( {
-                map: loader.load('textures/Rock004_2K_Color.jpg'),
-                aoMap: loader.load('textures/Rock004_2K_AmbientOcclusion.jpg'),
-                normalMap: loader.load('textures/Rock004_2K_Normal.jpg')
-            } )
+            map: loader.load('textures/Rock004_2K_Color.jpg'),
+            aoMap: loader.load('textures/Rock004_2K_AmbientOcclusion.jpg'),
+            normalMap: loader.load('textures/Rock004_2K_Normal.jpg')
+        } )
 
         var pyramid = new THREE.Object3D()
         var bricks = []
@@ -203,22 +243,22 @@
                 if(floor_perimeter < floor_width){
                     translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                 }
                 else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
                     translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                 }
                 else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
                     translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                 }
                 else{
                     translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation( - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width * 3 - 3)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                 }
                 bricks.push(geometry)
             }
@@ -241,24 +281,24 @@
                 if(floor_perimeter < floor_width){
                     var translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_perimeter - floor_width/2 + brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                     south_face.push(geometry)
                 }
                 else if(floor_perimeter >= floor_width && floor_perimeter < floor_width * 2 - 1){
                     var translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_width/2 - brick_size/2, height + brick_size/2, floor_width/2 - brick_size/2 - floor_perimeter + floor_width - 1)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                     east_face.push(geometry)
                 }
                 else if(floor_perimeter >= floor_width * 2 - 1 && floor_perimeter < floor_width * 3 - 2){
                     var translation_matrix = new THREE.Matrix4()
                     translation_matrix.makeTranslation(floor_perimeter - floor_width*2 + 1 - floor_width/2 + brick_size/2, height + brick_size/2, - floor_width/2 + brick_size/2)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                     north_face.push(geometry)
                 }
                 else {
                     translation_matrix.makeTranslation(-floor_width / 2 + brick_size / 2, height + brick_size / 2, floor_width / 2 - brick_size / 2 - floor_perimeter + floor_width * 3 - 3)
-                    geometry.applyMatrix(translation_matrix)
+                    geometry.applyMatrix4(translation_matrix)
                     west_face.push(geometry)
                 }
             }
@@ -270,9 +310,8 @@
             mesh.castShadow = true
             mesh.receiveShadow = true
             pyramid.add(mesh)
-            top_pyramid.push(mesh)
+            topPyramid.push(mesh)
         })
-
 
         // The whole inner pyramid grave object
         var grave = new THREE.Object3D()
@@ -512,53 +551,150 @@
         grave.add(pointLight1)
         pointLight1.position.set(12,8,5)
         pointLight1.castShadow = true
-
-        // var axesHelper = new THREE.AxesHelper( 5 );
-        // scene.add( axesHelper );
-
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        document.body.appendChild( stats.domElement );
-
-        // uncomment if you need to draw coordinate axes when building the scene
-        //Coordinates.drawAllAxes();
-
-        controls = new THREE.OrbitControls( camera );
-        controls.maxPolarAngle = Math.PI * 89/180
-        controls.maxDistance = ground_size/2
-        controls.addEventListener( 'change', Render );
     }
 
-    function Update() {
-        requestAnimationFrame( Update );
-        controls.update();
-        stats.update();
+    function growPalms(num){
+        var trunk = []
+        var branch = []
+        var crown = []
+        for(var i = 0; i < num; i++) {
+            var geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size)
+            var bark_material = new THREE.MeshPhongMaterial({
+                map: loader.load('textures/Bark.jpg')
+            })
+            var leaf_material = new THREE.MeshPhongMaterial({
+                map: loader.load('textures/Leaf.jpg')
+            })
+            for(var height = 0; height < 5; height++){
+                var bark = geometry.clone()
+                var translation_matrix = new THREE.Matrix4()
+                bark.matrixAutoUpdate = false
+                translation_matrix.makeTranslation(0, brick_size/2 + height * brick_size, 0)
+                bark.applyMatrix4(translation_matrix)
+                trunk.push(bark)
+            }
+            for(var width = 0; width < 3; width++){
+                var leaf = geometry.clone()
+                var translation_matrix = new THREE.Matrix4()
+                leaf.matrixAutoUpdate = false
+                if(width === 1)
+                    translation_matrix.makeTranslation(brick_size * (width + 1), brick_size/2 + brick_size * 6, 0)
+                else
+                    translation_matrix.makeTranslation(brick_size * (width + 1), brick_size/2 + brick_size * 5, 0)
+                leaf.applyMatrix4(translation_matrix)
+                branch.push(leaf)
+            }
+            for(var length = 0; length < 4; length++){
+                branch.forEach(leaf => {
+                    rotated_leaf = leaf.clone()
+                    var rotation_matrix = new THREE.Matrix4()
+                    rotation_matrix.makeRotationY(Math.PI*length/2)
+                    rotated_leaf.applyMatrix4(rotation_matrix)
+                    crown.push(rotated_leaf)
+                })
+            }
+            var mergedTrunk = THREE.BufferGeometryUtils.mergeBufferGeometries(trunk)
+            var mergedCrown = THREE.BufferGeometryUtils.mergeBufferGeometries(crown)
+            var trunkMesh = new THREE.Mesh(mergedTrunk, bark_material)
+            var crownMesh = new THREE.Mesh(mergedCrown, leaf_material)
+            trunkMesh.castShadow = true
+            trunkMesh.receiveShadow = true
+            crownMesh.castShadow = true
+            crownMesh.receiveShadow = true
+            var palm = new THREE.Object3D()
+            palm.add(trunkMesh)
+            palm.add(crownMesh)
+            translation_matrix = new THREE.Matrix4()
+            var x = Math.ceil(Math.random() * (ground_size / 3 - pyramid_width / 2) + pyramid_width / 2) * (Math.round(Math.random()) ? 1 : -1)
+            var z = Math.ceil(Math.random() * (ground_size / 3 - pyramid_width / 2) + pyramid_width / 2) * (Math.round(Math.random()) ? 1 : -1)
+            translation_matrix.makeTranslation(x, 0, z)
+            palm.applyMatrix4(translation_matrix)
+            scene.add(palm)
+            palm.baseMatrix = palm.matrix.clone()
+            palm.matrixAutoUpdate = false
+            trees.push(palm)
+        }
+    }
+
+    function animateObjects(){
         if(!showStatic){
             if(animationOn){
-                if(top_pyramid[0].position.x - brick_size/2 <= room_width + 1) {
+                if(topPyramid[0].position.x - brick_size/2 <= room_width + 1) {
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(0.5, 0, 0)
-                    top_pyramid.forEach(function (obj){
-                        obj.applyMatrix(translation_matrix)
+                    translation_matrix.makeTranslation(0.01, 0, 0)
+                    topPyramid.forEach(function (obj){
+                        obj.applyMatrix4(translation_matrix)
                     })
-                }else{
+                    if(up){
+                        treeRotationAngle += Math.PI * 0.01/180
+                        levitationHeight += 0.05
+                        var treeRotationMatrix = new THREE.Matrix4()
+                        var levitationMatrix = new THREE.Matrix4()
+                        trees.forEach(tree => {
+                            treeRotationMatrix.makeRotationY(treeRotationAngle)
+                            levitationMatrix.makeTranslation(0, levitationHeight, 0)
+                            tree.matrix.copy(tree.baseMatrix)
+                            animationMatrix = treeRotationMatrix.multiply(levitationMatrix)
+                            tree.applyMatrix4(animationMatrix)
+                        })
+                        count++
+                        if(count === 50) {
+                            up = false
+                            count = 0
+                        }
+                    }
+                    else{
+                        treeRotationAngle += Math.PI * 0.01/180
+                        levitationHeight -= 0.04
+                        treeRotationMatrix = new THREE.Matrix4()
+                        levitationMatrix = new THREE.Matrix4()
+                        trees.forEach(tree => {
+                            treeRotationMatrix.makeRotationY(treeRotationAngle)
+                            levitationMatrix.makeTranslation(0, levitationHeight, 0)
+                            tree.matrix.copy(tree.baseMatrix)
+                            animationMatrix = treeRotationMatrix.multiply(levitationMatrix)
+                            tree.applyMatrix4(animationMatrix)
+                        })
+                        count++
+                        if(count === 50) {
+                            up = true
+                            count = 0
+                        }
+                    }
+                    var lightRotationMatrixZ = new THREE.Matrix4()
+                    lightRotationMatrixZ.makeRotationZ(Math.PI * 1/180)
+                    dirLight.applyMatrix4(lightRotationMatrixZ)
+                }else {
                     showStatic = true
                 }
             }
 
             if(!animationOn){
-                if(top_pyramid[0].position.x - brick_size/2 >= 0){
+                if(topPyramid[0].position.x - brick_size/2 >= 0){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(-0.5, 0, 0)
-                    top_pyramid.forEach(function (obj){
-                        obj.applyMatrix(translation_matrix)
+                    translation_matrix.makeTranslation(-0.02, 0, 0)
+                    topPyramid.forEach(function (obj){
+                        obj.applyMatrix4(translation_matrix)
                     })
+                    if(trees[0].position.y > 0.1){
+                        var levitation_matrix = new THREE.Matrix4()
+                        levitation_matrix.makeTranslation(0, -0.01, 0)
+                        trees.forEach(tree => {
+                            tree.applyMatrix4(levitation_matrix)
+                        })
+                    }
                 }else{
                     showStatic = true
                 }
             }
         }
+    }
+var up = true
+    function Update() {
+        requestAnimationFrame( Update );
+        controls.update();
+        stats.update();
+        animateObjects();
         //pivot_camera.rotation.y += 0.5 * Math.PI/180
         Render();
     }
