@@ -58,49 +58,54 @@
 		</script>
 
 <script>
+    const loader = new THREE.TextureLoader();
     var scene, camera, renderer, controls, stats, pivot_camera;
-
     var ground_size = 500
-
-    var brick_size = 1
+    var clock = new THREE.Clock()
     var room_width = 14
-
+    var brick_size = 1
     var pyramid_width = 3 * room_width + 2
     var pyramid_height = 3 * room_width / 2 + 1
-
     var topPyramid = []
-
     var trees = []
-
     var treeRotationAngle = 0
     var levitationHeight = 0
     var lightRotationAngle = 0
-
     var count = 0
-
     var dirLight
-
-    const loader = new THREE.TextureLoader();
-
     var showStatic = true
-    animationOn = false
-    var params = {
-        toggleAnimation: toggleAnimation
-    }
-    const gui = new dat.gui.GUI({name: "Controls"})
-    gui.add( params, 'toggleAnimation', true).name( "Pyramid" );
+    var animationOn = false
+    var up = true
 
     function toggleAnimation(){
         showStatic = false
         animationOn = !animationOn
     }
 
+    var params = {
+        toggleAnimation: toggleAnimation
+    }
+
+    const gui = new dat.gui.GUI({name: "Controls"})
+    gui.add( params, 'toggleAnimation', true).name( "Pyramid" );
+
+    /**
+    * INITIALIZE THE SCENE
+    */
     function Start() {
+
+        // Scene and Camera
         scene = new THREE.Scene();
         scene.background = new THREE.Color().setHSL( 0.6, 0, 1 );
         scene.fog = new THREE.Fog( scene.background, 1, 5000 );
         camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        camera.position.set(0,10,250);
+        camera.lookAt(0,0,0);
+        pivot_camera = new THREE.Object3D()  // pivot for camera animations
+        pivot_camera.add(camera)
+        scene.add(pivot_camera)
 
+        // Renderer
         renderer = new THREE.WebGLRenderer( {antialias: true} );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.setPixelRatio( window.devicePixelRatio );
@@ -109,11 +114,8 @@
         renderer.gammaOutput = true
         document.body.appendChild( renderer.domElement );
 
-        pivot_camera = new THREE.Object3D()
-        pivot_camera.add(camera)
 
-        camera.position.set(10,40,50);
-        camera.lookAt( new THREE.Vector3(0,0,0));
+        // Pivot for camera animations
 
         setUpLights()
 
@@ -123,23 +125,37 @@
 
         growPalms(50)
 
+
+
+        // HELPERS
+
+        // uncomment if you need to draw coordinate axes when building the scene
+        //Coordinates.drawAllAxes();
+
         // var axesHelper = new THREE.AxesHelper( 5 );
         // scene.add( axesHelper );
+
+
+        // STATS
 
         stats = new Stats();
         stats.domElement.style.position = 'absolute';
         stats.domElement.style.top = '0px';
         document.body.appendChild( stats.domElement );
 
-        // uncomment if you need to draw coordinate axes when building the scene
-        //Coordinates.drawAllAxes();
 
+        // ORBIT CONTROLS
         controls = new THREE.OrbitControls( camera );
         controls.maxPolarAngle = Math.PI * 89/180
         controls.maxDistance = ground_size/2
         controls.addEventListener( 'change', Render );
     }
 
+    /**
+    *
+    * LIGHTS
+    *
+    */
     function setUpLights(){
         hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.2 );
         hemiLight.color.setHSL( 0.6, 1, 0.6 );
@@ -147,8 +163,8 @@
         hemiLight.position.set( 0, 200, 0 );
         scene.add( hemiLight );
 
-        const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
-        scene.add( hemiLightHelper );
+        // const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
+        // scene.add( hemiLightHelper );
 
         dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
         dirLight.color.setHSL( 0.1, 1, 0.95 );
@@ -156,12 +172,13 @@
         dirLight.pivot = new THREE.Object3D()
         dirLight.pivot.add( dirLight );
         dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 1024;
-        dirLight.shadow.mapSize.height = 1024;
+        dirLight.shadow.mapSize.width = 2048;
+        dirLight.shadow.mapSize.height = 2048;
+        dirLight.shadow.bias = -0.0005
         scene.add(dirLight.pivot)
 
-        const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
-        scene.add( dirLightHelper );
+        // const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
+        // scene.add( dirLightHelper );
 
         const d = 256;
 
@@ -172,8 +189,13 @@
 
     }
 
+    /**
+    *
+    * SCENARIO
+    *
+    */
     function setUpScenario() {
-        // GROUND
+        // Ground with sand texture
         var map = loader.load('textures/Ground033_2K_Color.jpg')
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
@@ -199,7 +221,7 @@
         ground.receiveShadow = true;
         ground.castShadow = true;
 
-        // DOME
+        // Sky dome (inspired by three.js example "Flamingo" by Mirada)
         const vertexShader = document.getElementById( 'vertexShader' ).textContent;
         const fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
         const uniforms = {
@@ -225,6 +247,12 @@
         scene.add( sky );
     }
 
+
+    /**
+    *
+    * PYRAMID
+    *
+    */
     function buildPyramid(){
         var brick_geometry = new THREE.BoxBufferGeometry(brick_size, brick_size, brick_size);
         var brick_material = new THREE.MeshPhongMaterial( {
@@ -313,14 +341,16 @@
             topPyramid.push(mesh)
         })
 
-        // The whole inner pyramid grave object
-        var grave = new THREE.Object3D()
-        grave.position.set(-11, 0, -11)
         /**
          *
-         * OUTSIDE WALLS
+         * INNER GRAVE 
          *
          */
+
+        var grave = new THREE.Object3D()
+        grave.position.set(-11, 0, -11)
+        
+        // Grave walls
         function buildWall(x,y,z,dir){
             let pivot = new THREE.Object3D();
             pivot.position.set(x,y,z)
@@ -371,11 +401,8 @@
             }))
         }))
 
-        /**
-         *
-         * FLOOR OF THE GRAVE
-         *
-         **/
+        
+        // Grave floor
         innerBuilding.position.set(3,2,3)
         var texture_floor = loader.load("textures/grave_wall.jpg")
         var ground = new THREE.Object3D()
@@ -405,11 +432,7 @@
         pyramid.add(grave)
 
 
-        /**
-         *
-         * SARCOPHAGUS
-         *
-         */
+        // Sarcophagus
 
         var sarcophagus = new THREE.Object3D()
         var texture_sarcophagus = loader.load("textures/sarc.jpg")
@@ -495,11 +518,7 @@
         sarcophagus.position.set(9,1.5,8)
 
 
-        /**
-         *
-         * DECORATIONS
-         *
-         */
+        // Decorations
 
         var pharaoh_head_texture = loader.load("textures/pharaoh1test.jpg")
         var monument_texture = loader.load("textures/gravestuff.jpg")
@@ -520,12 +539,7 @@
         pharaoh_head.position.set(2,4,-4.8)
 
 
-        /**
-         *
-         * INNER LIGHTS (with torch)
-         *
-         */
-
+        // Inner lights
         var geometry_torch = new THREE.BoxBufferGeometry(0.2,0.2,0.2)
         var material_torch = new THREE.MeshPhongMaterial({
             color: 0x111111
@@ -540,19 +554,24 @@
         }
 
         var torch_fire = new THREE.MeshPhongMaterial({
-            emissive: 0xfdcf58
+            emissive: 0xff6400
         })
         var torch_fire_geom = new THREE.BoxBufferGeometry(0.3,0.3,0.3)
         var torch_light = new THREE.Mesh(torch_fire_geom, torch_fire)
         sarcophagus.add(torch_light)
         torch_light.position.set(2,offset+0.4,-3.85)
 
-        var pointLight1 = new THREE.PointLight(0xf07f13,0.5)
+        var pointLight1 = new THREE.PointLight(0xff3200,0.5)
         grave.add(pointLight1)
-        pointLight1.position.set(12,8,5)
+        pointLight1.position.set(11,8,5)
         pointLight1.castShadow = true
     }
 
+    /**
+     *
+     * PALMS 
+     *
+     */
     function growPalms(num){
         var trunk = []
         var branch = []
@@ -616,12 +635,18 @@
         }
     }
 
+
+    /**
+     *
+     * ANIMATIONS
+     *
+     */
     function animateObjects(){
         if(!showStatic){
             if(animationOn){
                 if(topPyramid[0].position.x - brick_size/2 <= room_width + 1) {
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(0.01, 0, 0)
+                    translation_matrix.makeTranslation(0.1, 0, 0)
                     topPyramid.forEach(function (obj){
                         obj.applyMatrix4(translation_matrix)
                     })
@@ -661,9 +686,6 @@
                             count = 0
                         }
                     }
-                    var lightRotationMatrixZ = new THREE.Matrix4()
-                    lightRotationMatrixZ.makeRotationZ(Math.PI * 1/180)
-                    dirLight.applyMatrix4(lightRotationMatrixZ)
                 }else {
                     showStatic = true
                 }
@@ -672,13 +694,13 @@
             if(!animationOn){
                 if(topPyramid[0].position.x - brick_size/2 >= 0){
                     var translation_matrix = new THREE.Matrix4()
-                    translation_matrix.makeTranslation(-0.02, 0, 0)
+                    translation_matrix.makeTranslation(-0.1, 0, 0)
                     topPyramid.forEach(function (obj){
                         obj.applyMatrix4(translation_matrix)
                     })
                     if(trees[0].position.y > 0.1){
                         var levitation_matrix = new THREE.Matrix4()
-                        levitation_matrix.makeTranslation(0, -0.01, 0)
+                        levitation_matrix.makeTranslation(0, -0.05, 0)
                         trees.forEach(tree => {
                             tree.applyMatrix4(levitation_matrix)
                         })
@@ -689,13 +711,13 @@
             }
         }
     }
-var up = true
+
+    
     function Update() {
         requestAnimationFrame( Update );
         controls.update();
         stats.update();
         animateObjects();
-        //pivot_camera.rotation.y += 0.5 * Math.PI/180
         Render();
     }
 
@@ -705,6 +727,7 @@ var up = true
 
     Start();
     Update();
+
 
 </script>
 </body>
