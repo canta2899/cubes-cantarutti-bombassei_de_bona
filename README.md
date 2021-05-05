@@ -2,7 +2,7 @@
 
 ![Demonstration](imgs/demo-to-gif.gif)
 
-This repository constains the project developed by Francesco Bombassei De Bona and Andrea Cantarutti (A.A. 2020/2021) and based on the first assignment of the Interactive 3D Graphics course. 
+This repository constains the project I've developed, together with [Francesco Bombassei De Bona](https://github.com/FraBomba6), as the first assignment of the Interactive 3D Graphics course, held by [Roberto Ranon](http://users.dimi.uniud.it/~roberto.ranon/) at the [University of Udine](https://www.uniud.it/it) during the A.Y 2020-2021.
 
 ## Description
 
